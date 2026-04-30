@@ -1,0 +1,9 @@
+# OKL v1
+# violation: required field `id` (non-optional int) is encoded as the absent token
+# session_name = "required-absent"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+#   response          : id:int operandum:int?
+# ---
+0.0	response	-	-

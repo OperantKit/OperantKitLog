@@ -1,0 +1,6 @@
+# OKL v1
+# session_name = "empty-body"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+# ---

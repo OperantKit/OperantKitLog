@@ -1,0 +1,13 @@
+# OKL v1
+# session_name = "tsv-escapes"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+#   note              : text:str
+# ---
+0.0	note	plain
+1.0	note	with\ttab
+2.0	note	with\nnewline
+3.0	note	with\\backslash
+4.0	note	dash-as-string\-
+5.0	note	double-dash--in-the-middle

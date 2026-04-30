@@ -1,0 +1,11 @@
+# OKL v1
+# session_name = "custom-event"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+#   response          : id:int operandum:int?
+#   pr_completed      : ratio:int duration_sec:float
+# ---
+0.0	response	0	-
+1.0	response	1	-
+2.0	pr_completed	2	2.0

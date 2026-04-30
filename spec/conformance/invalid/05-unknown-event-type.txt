@@ -1,0 +1,9 @@
+# OKL v1
+# violation: body row uses event type `mystery` not declared in the codebook
+# session_name = "unknown-type"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+#   response          : id:int operandum:int?
+# ---
+0.0	mystery	0	-

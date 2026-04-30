@@ -1,0 +1,9 @@
+# OKL v1
+# violation: response codebook declares 2 columns but body row has 3
+# session_name = "column-mismatch"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+#   response          : id:int operandum:int?
+# ---
+0.0	response	0	-	extra

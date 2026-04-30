@@ -1,0 +1,8 @@
+# OKL v1
+# violation: required header key `session_start` missing
+# session_name = "missing-required"
+# clock_type = "ManualClock"
+# events:
+#   response          : id:int operandum:int?
+# ---
+0.0	response	0	-

@@ -1,0 +1,38 @@
+# OKL v1
+# session_name = "full-canonical"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# subject_id = "subj01"
+# replication_index = 0
+# experiment_name = "demo"
+# protocol_id = "FR3-v1"
+# task_file_hash = "sha256:abc123"
+# wall_clock_start = "2026-01-01T00:00:00+00:00"
+# notes:
+#   "rig 2 ran cool today"
+#   "subject lever-pressed during ITI"
+# meta:
+#   schedule_dsl = "FR3"
+#   replicate = true
+# events:
+#   response          : id:int operandum:int?
+#   reinforcer_start  : id:int potency:float operandum:int?
+#   reinforcer_end    : id:int operandum:int?
+#   state_change      : from:str to:str
+#   component_change  : from:str to:str
+#   phase_enter       : label:str name:str? time:str? location:str? cue:str?
+#   phase_exit        : label:str
+# ---
+0.0	state_change	IDLE	RUNNING
+0.0	phase_enter	Train	A	-	room_a	-
+0.5	response	0	0
+1.0	response	1	0
+1.5	response	2	0
+1.5	reinforcer_start	0	1.0	0
+2.0	reinforcer_end	0	0
+4.0	component_change	A	B
+10.0	phase_exit	Train
+10.0	phase_enter	Test	B	-	-	-
+11.0	response	3	-
+20.0	phase_exit	Test
+20.0	state_change	RUNNING	IDLE

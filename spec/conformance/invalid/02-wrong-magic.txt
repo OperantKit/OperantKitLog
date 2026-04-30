@@ -1,0 +1,7 @@
+# OKL v9
+# violation: magic line declares an unknown format version
+# session_name = "wrong-magic"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+# ---

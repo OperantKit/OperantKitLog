@@ -1,0 +1,121 @@
+(* ====================================================================== *)
+(* OKL v1 (OperantKitLog v1) — wire format grammar                          *)
+(* ====================================================================== *)
+(* Plain UTF-8 text format with the .txt extension.                         *)
+(* This grammar is the canonical source of truth for what an OKL v1         *)
+(* file is. Implementations (Python in session-recorder, future Rust /      *)
+(* TS / JS readers) must accept exactly the language defined here.          *)
+(* ====================================================================== *)
+
+file               = magic_line , LF , header_block , body ;
+
+(* Newlines: writers MUST emit LF. Readers MUST accept LF and CRLF.         *)
+LF                 = ? U+000A ? ;
+CRLF               = ? U+000D U+000A ? ;
+NL                 = LF | CRLF ;
+
+(* ---------------------------------------------------------------------- *)
+(* Magic                                                                  *)
+(* ---------------------------------------------------------------------- *)
+
+magic_line         = "# OKL v1" ;
+
+(* ---------------------------------------------------------------------- *)
+(* Header                                                                 *)
+(* ---------------------------------------------------------------------- *)
+
+header_block       = { header_line , NL } , terminator , NL ;
+terminator         = "# ---" ;
+
+header_line        = comment_prefix , header_body ;
+comment_prefix     = "#" , [ " " ] ;
+
+header_body        = top_kv | section_marker | section_continuation | empty ;
+
+(* Top-level fields (TOML-flat key/value lines).                          *)
+top_kv             = identifier , [ ws ] , "=" , [ ws ] , toml_value ;
+
+(* Section markers introduce a multi-line block.                          *)
+section_marker     = "meta:" | "notes:" | "events:" ;
+section_continuation
+                   = (* Inside `meta:`   *) top_kv
+                   | (* Inside `notes:`  *) toml_string
+                   | (* Inside `events:` *) codebook_decl ;
+
+empty              = (* zero characters after the comment prefix *) ;
+
+(* ---------------------------------------------------------------------- *)
+(* Codebook declaration                                                   *)
+(* ---------------------------------------------------------------------- *)
+
+codebook_decl      = type_name , [ ws ] , ":" , [ ws ] , field_list ;
+field_list         = [ field_decl , { ws , field_decl } ] ;
+field_decl         = identifier , ":" , field_ty , [ "?" ] ;
+field_ty           = "int" | "float" | "str" | "bool" ;
+
+(* ---------------------------------------------------------------------- *)
+(* Body                                                                   *)
+(* ---------------------------------------------------------------------- *)
+
+body               = { body_line , NL } ;
+body_line          = timestamp , TAB , type_name , { TAB , column } ;
+TAB                = ? U+0009 ? ;
+
+(* Body line columns are positional, ordered exactly as declared by       *)
+(* the codebook for `type_name`. The column count MUST match.             *)
+column             = int_lit | float_lit | bool_lit | str_lit | absent ;
+absent             = "-" ;
+
+(* ---------------------------------------------------------------------- *)
+(* Lexical                                                                *)
+(* ---------------------------------------------------------------------- *)
+
+type_name          = identifier ;
+identifier         = ( letter | "_" ) , { letter | digit | "_" } ;
+letter             = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H"
+                   | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P"
+                   | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X"
+                   | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f"
+                   | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n"
+                   | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v"
+                   | "w" | "x" | "y" | "z" ;
+digit              = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7"
+                   | "8" | "9" ;
+ws                 = ? one or more U+0020 SPACE ? ;
+
+(* TOML scalars (basic-string / integer / float / boolean).               *)
+toml_value         = toml_string | toml_int | toml_float | toml_bool ;
+toml_string        = '"' , { string_char | escape } , '"' ;
+toml_int           = [ "-" | "+" ] , digit , { digit } ;
+toml_float         = ? Python repr() of a finite float, e.g. 1.5, 1e-3 ? ;
+toml_bool          = "true" | "false" ;
+
+(* TSV-escaped string literal in a body column.                           *)
+str_lit            = { string_char | tsv_escape } ;
+string_char        = ? any UTF-8 codepoint EXCEPT TAB, LF, CR, "\\" ? ;
+tsv_escape         = "\\\\" | "\\t" | "\\n" | "\\r" | "\\-" ;
+escape             = "\\\\" | '\\"' | "\\n" | "\\r" | "\\t" ;
+
+int_lit            = [ "-" | "+" ] , digit , { digit } ;
+float_lit          = ? Python repr() of a finite float ? ;
+bool_lit           = "true" | "false" ;
+timestamp          = float_lit ;
+
+(* ====================================================================== *)
+(* Notes                                                                   *)
+(* ====================================================================== *)
+(* 1. Required header fields: session_name, clock_type, session_start.     *)
+(*    A reader MUST raise on absence; see header.md §2.                    *)
+(* 2. Unknown top-level keys: a writer MUST NOT emit; a reader MAY tolerate*)
+(*    by preserving them under `metadata` and emitting a warning. See      *)
+(*    header.md §3.                                                        *)
+(* 3. Unknown body event types: a writer MUST emit only types declared in  *)
+(*    the codebook. A reader MAY tolerate unknown types by skipping them   *)
+(*    or MUST raise on them, per its own configuration.                    *)
+(* 4. Strings in body columns are TSV-escaped (tsv_escape). Strings in     *)
+(*    header values are TOML basic-strings (escape). The two encodings     *)
+(*    are different; do not mix.                                           *)
+(* 5. The literal single-character string "-" in a body column MUST be     *)
+(*    written as "\\-" so it is not confused with the absent token.        *)
+(* 6. UTF-8 BOM at file start is INVALID (writers MUST NOT emit; readers   *)
+(*    MUST raise a clear error).                                           *)
