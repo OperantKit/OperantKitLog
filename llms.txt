@@ -1,0 +1,42 @@
+# OperantKitLog (OKL v1)
+
+> Specification of OKL v1, a plain-text, tab-separated log format for operant and respondent conditioning sessions (responses, reinforcer start and end, state changes, phases), with a self-describing header and codebook, a formal EBNF grammar, and valid/invalid conformance fixtures.
+
+OperantKitLog is part of OperantKit, a set of Python/Rust packages for designing and running operant and respondent conditioning experiments (reinforcement schedules, session recording, analysis). This repository contains the specification only; use it when you write a reader or writer for session logs in any language, instead of inventing a CSV or JSON layout.
+
+## Example file
+
+```text
+# OKL v1
+# session_name = "minimal"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+#   response          : id:int operandum:int?
+# ---
+0.0	response	0	-
+1.5	response	1	-
+3.0	response	2	0
+```
+
+Header lines start with `#`; after `# ---` each line is `timestamp<TAB>event_type<TAB>columns...`, with `-` for an absent optional value.
+
+## Implementations
+
+```bash
+pip install session-recorder   # Python writer (OklSink) and reader (read_log, iter_records)
+```
+
+## Docs
+
+- [README](https://github.com/OperantKit/OperantKitLog/blob/main/README.md): contents, 30-second example, stability contract, conformance
+- [AGENTS.md](https://github.com/OperantKit/OperantKitLog/blob/main/AGENTS.md): when to use this specification and what not to do
+- [Wire format](https://github.com/OperantKit/OperantKitLog/blob/main/spec/wire-format.md): file structure, escaping, stability contract
+- [Header](https://github.com/OperantKit/OperantKitLog/blob/main/spec/header.md) and [codebook](https://github.com/OperantKit/OperantKitLog/blob/main/spec/codebook.md): required fields and canonical event types
+- [Grammar](https://github.com/OperantKit/OperantKitLog/blob/main/spec/grammar.ebnf): formal EBNF
+
+## Related packages
+
+- [session-recorder](https://github.com/OperantKit/session-recorder): Python implementation, tested against the conformance fixtures
+- [session-analyzer](https://github.com/OperantKit/session-analyzer): analyses that read OKL v1 logs (`pip install session-analyzer`)
+- [session-runner](https://github.com/OperantKit/session-runner): runs sessions whose events are written as OKL v1 (`pip install session-runner`)
