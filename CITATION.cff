@@ -5,3 +5,4 @@ title: "OperantKitLog"
 authors:
   - name: "OperantKit contributors"
 repository-code: "https://github.com/OperantKit/OperantKitLog"
+license: MIT

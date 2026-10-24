@@ -84,4 +84,4 @@ Implementations MUST accept every file under [`spec/conformance/valid/`](spec/co
 
 ## License
 
-This repository contains no license file.
+MIT. See [LICENSE](LICENSE).
