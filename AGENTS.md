@@ -33,3 +33,12 @@ Use behavior-analytic terms: *reinforcer* (not "reward"), *discriminative stimul
 - Specification only: Markdown, EBNF, and fixture files.
 - `README.md` (English) is canonical; keep `README.ja.md` in sync in the same commit.
 - The Python implementation in session-recorder runs every fixture through its conformance test; run it after changing fixtures.
+
+## Why a specified format instead of an ad-hoc CSV or JSON log?
+
+- **Self-describing.** The codebook in each file declares the event types and column types, so a reader needs no external schema and new event types do not break old readers.
+- **Typed and escaped.** Columns are `int`, `float`, `str`, or `bool`, optionally marked `?`; tabs, newlines, and backslashes in strings are escaped, and `-` marks an absent value, so every line has a fixed number of columns.
+- **Plain text.** UTF-8 with tab-separated bodies opens in any editor and works with `grep`, `awk`, `column`, and spreadsheet import.
+- **Testable conformance.** 5 valid and 5 invalid fixtures define what a reader must accept and reject; each invalid fixture states the rule it violates on its second line.
+- **Formal grammar.** [`spec/grammar.ebnf`](spec/grammar.ebnf) defines the syntax, so readers in other languages can be written against the specification rather than against one implementation.
+
