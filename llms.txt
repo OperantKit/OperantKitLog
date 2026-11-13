@@ -33,7 +33,7 @@ pip install git+https://github.com/OperantKit/contingency-dsl-py \
 
 ## Docs
 
-- [README](https://github.com/OperantKit/OperantKitLog/blob/main/README.md): contents, 30-second example, stability contract, conformance
+- [README](https://github.com/OperantKit/OperantKitLog/blob/main/README.md): contents, example, stability contract, conformance
 - [AGENTS.md](https://github.com/OperantKit/OperantKitLog/blob/main/AGENTS.md): when to use this specification and what not to do
 - [Wire format](https://github.com/OperantKit/OperantKitLog/blob/main/spec/wire-format.md): file structure, escaping, stability contract
 - [Header](https://github.com/OperantKit/OperantKitLog/blob/main/spec/header.md) and [codebook](https://github.com/OperantKit/OperantKitLog/blob/main/spec/codebook.md): required fields and canonical event types
