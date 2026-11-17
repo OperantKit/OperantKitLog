@@ -51,12 +51,15 @@ A discrete operant response.
 
 | Field       | Type   | Optional? | Meaning                                            |
 |-------------|--------|-----------|----------------------------------------------------|
-| `id`        | int    | no        | Sequential response id (0-based, monotonic)        |
-| `operandum` | int    | yes       | Operandum index for multi-operandum sessions       |
+| `id`          | int    | no        | Sequential response id (0-based, monotonic)        |
+| `operandum`   | int    | yes       | Operandum index for multi-operandum sessions       |
+| `device_time` | float  | yes       | Time the apparatus itself stamped on the response, kept for the record only; the line's timestamp is always session time. Absent when the source has no clock of its own (virtual subjects, manual input) |
 
 ### `reinforcer_start`
 
-The onset of a reinforcer delivery.
+The onset of a reinforcer delivery. This is the name for the onset of a
+stimulus presentation as seen from the operant side, where the stimulus
+is a consequence arranged by a schedule.
 
 | Field       | Type   | Optional? | Meaning                                            |
 |-------------|--------|-----------|----------------------------------------------------|
@@ -115,6 +118,27 @@ same `label`.
 |---------|------|-----------|--------------------------|
 | `label` | str  | no        | Phase label               |
 
+### `stimulus_on`
+
+The onset of a stimulus presentation, recorded without naming the role
+the stimulus plays in any theory (reinforcer, US, CS, SD). Used by
+respondent procedures such as delay conditioning, where the CS and the
+US are presented by the session's clock rather than as a consequence of
+a response.
+
+| Field      | Type | Optional? | Meaning                                         |
+|------------|------|-----------|-------------------------------------------------|
+| `stimulus` | str  | no        | Stimulus label (`tone`, `light`, `food`, ...)   |
+
+### `stimulus_off`
+
+The offset of a stimulus presentation. Pairs with the most recent
+`stimulus_on` of the same `stimulus`.
+
+| Field      | Type | Optional? | Meaning                                         |
+|------------|------|-----------|-------------------------------------------------|
+| `stimulus` | str  | no        | Stimulus label (matches the `stimulus_on`)      |
+
 ## 3. Custom event types
 
 A file MAY declare event types beyond the canonical set. Custom
@@ -130,6 +154,10 @@ A consumer that does not understand a custom type MAY:
 ## 4. Stability
 
 - Adding a **new event type** to §2 is non-breaking.
+- A new event type is added to §2 only together with an existing
+  procedure that uses it, named in the type's description, and a
+  `spec/conformance/valid/` fixture that contains it. Types that no
+  existing procedure uses stay custom (§3).
 - Adding a **new optional field** to an existing canonical type is
   non-breaking (consumers parse columns by codebook position; new
   optional columns at the end appear as extra `field?` declarations

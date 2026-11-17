@@ -1,6 +1,6 @@
 # OperantKitLog (OKL v1)
 
-> Specification of OKL v1, a plain-text, tab-separated log format for operant and respondent conditioning sessions (responses, reinforcer start and end, state changes, phases), with a self-describing header and codebook, a formal EBNF grammar, and valid/invalid conformance fixtures.
+> Specification of OKL v1, a plain-text, tab-separated log format for operant and respondent conditioning sessions (responses, reinforcer start and end, stimulus on and off, state changes, phases), with a self-describing header and codebook, a formal EBNF grammar, and valid/invalid conformance fixtures.
 
 OperantKitLog is part of OperantKit, a set of Python/Rust packages for designing and running operant and respondent conditioning experiments (reinforcement schedules, session recording, analysis). This repository contains the specification only; use it when you write a reader or writer for session logs in any language, instead of inventing a CSV or JSON layout.
 

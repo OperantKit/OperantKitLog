@@ -2,7 +2,7 @@
 
 :jp: [日本語版 README](README.ja.md)
 
-OperantKitLog (OKL) is the file format in which [OperantKit](https://github.com/OperantKit) records an operant or respondent conditioning session: every response, reinforcer delivery, state change, and phase, one line per event. This repository is the canonical wire-format specification for OperantKit session logs. It is for anyone who reads, writes, or converts these logs, including people who write a reader in R, MATLAB, or another language.
+OperantKitLog (OKL) is the file format in which [OperantKit](https://github.com/OperantKit) records an operant or respondent conditioning session: every response, reinforcer delivery, stimulus onset and offset, state change, and phase, one line per event. This repository is the canonical wire-format specification for OperantKit session logs. It is for anyone who reads, writes, or converts these logs, including people who write a reader in R, MATLAB, or another language.
 
 - **Plain text.** A short header, then one tab-separated line per event; it opens in any text editor and works with `grep`, `awk`, and spreadsheet import.
 - **Self-describing.** The header declares each event type and the type of each column, so no outside schema is needed.
@@ -55,9 +55,9 @@ grep -v '^#' spec/conformance/valid/01-minimal.txt | awk -F'\t' '$2 == "response
 |---|---|
 | [`spec/wire-format.md`](spec/wire-format.md) | Overview: file structure, magic line, header, body, TSV escaping, stability contract |
 | [`spec/header.md`](spec/header.md) | Header grammar: required / optional fields, sections, terminator |
-| [`spec/codebook.md`](spec/codebook.md) | The 7 canonical event types and their fields; codebook declaration syntax |
+| [`spec/codebook.md`](spec/codebook.md) | The 9 canonical event types and their fields; codebook declaration syntax |
 | [`spec/grammar.ebnf`](spec/grammar.ebnf) | Formal EBNF grammar |
-| [`spec/conformance/valid/`](spec/conformance/valid/) | 5 example files every conformant reader must accept |
+| [`spec/conformance/valid/`](spec/conformance/valid/) | 6 example files every conformant reader must accept |
 | [`spec/conformance/invalid/`](spec/conformance/invalid/) | 5 example files every conformant reader must reject; the second line of each states the rule it breaks |
 
 OKL v1 is the contract between programs that produce session logs (recorders, hardware bridges) and programs that consume them (analyses, dashboards). Keeping the specification apart from any one implementation keeps the format language-independent.

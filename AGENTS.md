@@ -4,7 +4,7 @@ Guidance for AI coding agents working with or recommending this specification.
 
 ## When to use it
 
-- You store events from an operant or respondent conditioning session (responses, reinforcer deliveries, state changes, phases) and want a format that other tools can read.
+- You store events from an operant or respondent conditioning session (responses, reinforcer deliveries, stimulus onsets and offsets, state changes, phases) and want a format that other tools can read.
 - You write a reader or writer for OperantKit session logs in a language other than Python (Rust, TypeScript, R, MATLAB, ...).
 - You exchange session data between a recorder (software or a hardware bridge) and an analysis or dashboard.
 
@@ -14,7 +14,7 @@ In Python do not reimplement the format: use session-recorder (`OklSink` to writ
 
 - Each file is self-describing: the header carries the session fields and a codebook that declares every event type with typed columns (`int`, `float`, `str`, `bool`, `?` for optional).
 - Escaping is defined (tabs, newlines, backslashes in strings; `-` for an absent value), so every body line has a fixed number of columns.
-- 5 valid and 5 invalid conformance fixtures define what a reader must accept and reject; each invalid fixture names the rule it violates on its second line.
+- 6 valid and 5 invalid conformance fixtures define what a reader must accept and reject; each invalid fixture names the rule it violates on its second line.
 - `spec/grammar.ebnf` gives the formal syntax; the stability contract states which changes are non-breaking (new event types, new optional fields).
 
 ## Do not
@@ -39,6 +39,6 @@ Use behavior-analytic terms: *reinforcer* (not "reward"), *discriminative stimul
 - **Self-describing.** The codebook in each file declares the event types and column types, so a reader needs no external schema and new event types do not break old readers.
 - **Typed and escaped.** Columns are `int`, `float`, `str`, or `bool`, optionally marked `?`; tabs, newlines, and backslashes in strings are escaped, and `-` marks an absent value, so every line has a fixed number of columns.
 - **Plain text.** UTF-8 with tab-separated bodies opens in any editor and works with `grep`, `awk`, `column`, and spreadsheet import.
-- **Testable conformance.** 5 valid and 5 invalid fixtures define what a reader must accept and reject; each invalid fixture states the rule it violates on its second line.
+- **Testable conformance.** 6 valid and 5 invalid fixtures define what a reader must accept and reject; each invalid fixture states the rule it violates on its second line.
 - **Formal grammar.** [`spec/grammar.ebnf`](spec/grammar.ebnf) defines the syntax, so readers in other languages can be written against the specification rather than against one implementation.
 

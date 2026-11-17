@@ -1,0 +1,15 @@
+# OKL v1
+# session_name = "delay-conditioning"
+# clock_type = "ManualClock"
+# session_start = 0.0
+# events:
+#   response          : id:int operandum:int? device_time:float?
+#   stimulus_on       : stimulus:str
+#   stimulus_off      : stimulus:str
+# ---
+10.0	stimulus_on	tone
+19.5	stimulus_on	food
+19.7	response	0	-	1019.702
+20.0	stimulus_off	tone
+20.0	stimulus_off	food
+21.0	response	1	-	-

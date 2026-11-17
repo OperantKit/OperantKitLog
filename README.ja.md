@@ -2,7 +2,7 @@
 
 :gb: [English README](README.md)
 
-OperantKitLog（OKL）は、[OperantKit](https://github.com/OperantKit) がオペラント条件づけやレスポンデント条件づけのセッションを記録するファイル形式です。反応・強化子の提示・状態の変化・フェイズのすべてを、1 つの出来事につき 1 行で記録します。このリポジトリは、OperantKit のセッションログの正典の wire format 仕様です。これらのログを読む人・書く人・変換する人、R や MATLAB などの言語で読み取りプログラムを書く人のためのものです。
+OperantKitLog（OKL）は、[OperantKit](https://github.com/OperantKit) がオペラント条件づけやレスポンデント条件づけのセッションを記録するファイル形式です。反応・強化子の提示・刺激の始まりと終わり・状態の変化・フェイズのすべてを、1 つの出来事につき 1 行で記録します。このリポジトリは、OperantKit のセッションログの正典の wire format 仕様です。これらのログを読む人・書く人・変換する人、R や MATLAB などの言語で読み取りプログラムを書く人のためのものです。
 
 - **プレーンテキストです。** 短いヘッダの後に、1 つの出来事につきタブ区切りの 1 行が続きます。どのテキストエディタでも開け、`grep`・`awk`・表計算ソフトへの読み込みがそのまま使えます。
 - **ファイルが自分自身を説明します。** ヘッダが出来事の種類ごとに各列の型を宣言するため、外部のスキーマは要りません。
@@ -55,9 +55,9 @@ grep -v '^#' spec/conformance/valid/01-minimal.txt | awk -F'\t' '$2 == "response
 |---|---|
 | [`spec/wire-format.md`](spec/wire-format.md) | 概要：ファイルの構造、magic 行、ヘッダ、本体、TSV のエスケープ、安定性の約束 |
 | [`spec/header.md`](spec/header.md) | ヘッダの文法：必須 / 任意の項目、セクション、終端の行 |
-| [`spec/codebook.md`](spec/codebook.md) | 正典の 7 種類の出来事とその項目、codebook の宣言の書き方 |
+| [`spec/codebook.md`](spec/codebook.md) | 正典の 9 種類の出来事とその項目、codebook の宣言の書き方 |
 | [`spec/grammar.ebnf`](spec/grammar.ebnf) | EBNF による形式文法 |
-| [`spec/conformance/valid/`](spec/conformance/valid/) | 仕様に適合する読み取りプログラムが必ず受け付ける 5 つの例のファイル |
+| [`spec/conformance/valid/`](spec/conformance/valid/) | 仕様に適合する読み取りプログラムが必ず受け付ける 6 つの例のファイル |
 | [`spec/conformance/invalid/`](spec/conformance/invalid/) | 仕様に適合する読み取りプログラムが必ず拒否する 5 つの例のファイル。各ファイルの 2 行目に、破っている規則が書かれています |
 
 OKL v1 は、セッションのログを作るプログラム（記録プログラム、ハードウェアとの橋渡し）と、ログを使うプログラム（分析、ダッシュボード）の間の約束です。仕様をどの実装からも切り離しておくことで、形式が特定の言語に依存しなくなります。
